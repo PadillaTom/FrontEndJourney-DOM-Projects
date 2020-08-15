@@ -30,4 +30,3 @@ btn.addEventListener('click', function () {
 function getRandom() {
   return Math.floor(Math.random() * hex.length);
 }
-//
