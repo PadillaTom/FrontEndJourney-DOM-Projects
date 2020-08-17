@@ -24,3 +24,11 @@ If not .links will mantain the 10rem or given height.
 // SIDEBAR !!!!
 Sidebar are used with Translate:-100% and toggle 0%;
 Close Button should remove the Show-Sidebar class.
+
+// QUESTIONS !!!!
+Usamos Selectors Inside an Element.
+
+1. Traversing DOM
+   //
+2. Select elements within a selection.
+   Seleccionamos un elemento y luego buscamos dentro de dicho elemento (query). Nos permite seleccionar specific things within a selection.
