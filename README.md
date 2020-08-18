@@ -32,3 +32,7 @@ Usamos Selectors Inside an Element.
    //
 2. Select elements within a selection.
    Seleccionamos un elemento y luego buscamos dentro de dicho elemento (query). Nos permite seleccionar specific things within a selection.
+   // MENU !!!!
+   On of the most important lessons here. We will use it with React, Angular, etc. Getting data from DB or API. Now we practice with local database.
+   First, create static HTML, then we make it Dynamic.
+   --> Display info fetched from API, DB, using AJAX ---> BREAD AND BUTTER <---
