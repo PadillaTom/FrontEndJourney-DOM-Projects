@@ -78,7 +78,8 @@ const menu = [
 //
 // 1) Select section center, why? To display info when the page is loaded, Dinamically!
 // Para esto we need the PARENT!, to display them inside him.
-const sectionCenter = document.querySelector('.section-center');
+// const sectionCenter = document.querySelector('.section-center');
+// const filterBtns = document.querySelectorAll('.filter-btn');
 //
 // 2) Listen to the LoadContent event. (when the page loads)
 // window.addEventListener('DOMContentLoaded', function () {
@@ -90,12 +91,45 @@ const sectionCenter = document.querySelector('.section-center');
 // Cada ARTICLE, contiene un IMG, H4, P, etc. (esta info está tambien en el Array)
 // Queremos iterar los elementos del Array, asi tambien la Info de cada Elemento.
 // Ademas meter dicha info en el HTML.
-window.addEventListener('DOMContentLoaded', function () {
-  let displayMenu = menu.map(function (item) {
-    // With MAP i can modify each object
-    // console.log(item); // Muestra cada Object (item).
-    // return `<h1> ${item.title} </h1>`; // Gracias a MAP podemos return un template literal, con cada propiedad de ITEM
-    // En vez de return H1 TITLE... Pegamos el ARTICLE HTML!!!!!
+// window.addEventListener('DOMContentLoaded', function () {
+// let displayMenu = menu.map(function (item) {
+// With MAP i can modify each object
+// console.log(item); // Muestra cada Object (item).
+// return `<h1> ${item.title} </h1>`; // Gracias a MAP podemos return un template literal, con cada propiedad de ITEM
+// En vez de return H1 TITLE... Pegamos el ARTICLE HTML!!!!!
+//   return `<article class="menu-item">
+//         <img src=${item.img} class="photo" alt="${item.title}" />
+//         <div class="item-info">
+//           <header>
+//             <h4>${item.title}</h4>
+//             <h4 class="price">${item.price}</h4>
+//           </header>
+//           <p>
+//             ${item.desc}
+//           </p>
+//         </div>
+//       </article>`;
+// });
+// 4) Then What? We want to display this inside our Section Center
+// displayMenu = displayMenu.join(''); // Convertimos todo en un STRING
+// console.log(displayMenu); // Muestra Array con Objects inside
+//   sectionCenter.innerHTML = displayMenu;
+// });
+//
+// CONCLUSION:
+// We looked inside Array, we return the HTML with dynamic info.
+// we joined them (each element) into a STR.
+// we placed them in the Section-Center with InnerHTML
+//
+// ----> FACTORING <----
+//In order to no repeat ourselves, is better to put everything inside a Function.
+// Entonces creamos la DisplayMenuItems que dentro tendra la main function y la invokamos cuando el DOM Load
+// window.addEventListener('DOMContentLoaded', function () {
+//   displayMenuItems(menu);
+// });
+
+function displayMenuItems(menuItems) {
+  let displayMenu = menuItems.map(function (item) {
     return `<article class="menu-item">
           <img src=${item.img} class="photo" alt="${item.title}" />
           <div class="item-info">
@@ -109,13 +143,54 @@ window.addEventListener('DOMContentLoaded', function () {
           </div>
         </article>`;
   });
-  // 4) Then What? We want to display this inside our Section Center
-  displayMenu = displayMenu.join(''); // Convertimos todo en un STRING
-  // console.log(displayMenu); // Muestra Array con Objects inside
+  displayMenu = displayMenu.join('');
   sectionCenter.innerHTML = displayMenu;
-});
+}
 //
-// CONCLUSION:
-// We looked inside Array, we return the HTML with dynamic info.
-// we joined them (each element) into a STR.
-// we placed them in the Section-Center with InnerHTML
+// ----> FILTERING <----
+// Creamos los buttons en HTML.
+// Dentro de un DIV creamos los BTNS y sus clases. ademas de sus textos.
+//
+// ----> APPLYING FILTERING TO BTNS <----
+// Seleccionamos los Filter BTNS y los ponemso sobre la function, donde van las selecciones.
+// const filterBtns = document.querySelectorAll('.filter-btn');
+// Filter Items.
+// filterBtns.forEach(function (btn) {
+//   btn.addEventListener('click', function (evt) {
+//     console.log(evt.currentTarget.dataset.filtername);
+// Debemos ir  al HTML BTN y agregar una propiedad: data-key="value" (ej: data-filtername="all") --> Value must match the ARRAY INFO
+// const category = evt.currentTarget.dataset.filtername; // Lo alojamos en un var
+// Sabemos que podemos filter la array y alojar datos en una nueva:
+// const menuCategory = menu.filter(function (menuItem) {
+//   return menuItem;
+// });
+//   });
+// });
+
+//
+//
+// FUNCTION COMPLETA: GRABING INFO AND FILTERING
+const sectionCenter = document.querySelector('.section-center');
+const filterBtns = document.querySelectorAll('.filter-btn');
+window.addEventListener('DOMContentLoaded', function () {
+  displayMenuItems(menu);
+});
+filterBtns.forEach(function (btn) {
+  btn.addEventListener('click', function (evt) {
+    // console.log(evt.currentTarget.dataset.filtername);
+    const category = evt.currentTarget.dataset.filtername;
+    const menuCategory = menu.filter(function (menuItem) {
+      // console.log(menuItem.category); // Devuelve ALL Category inside the ARRAY (for each item) we need to Filter THIS!
+      if (menuItem.category === category) {
+        // No hay Category ALL. Necesitamos otra IF
+        return menuItem;
+      }
+    });
+    if (category === 'all') {
+      displayMenuItems(menu); // Si category all: Mostramos toda la function , con el menu Array. (all items)
+    } else {
+      displayMenuItems(menuCategory);
+    }
+    // console.log(menuCategory); // Nos devuelve TODOS LOS ITEMS DEL ARRAY, queremos un IF.
+  });
+});
