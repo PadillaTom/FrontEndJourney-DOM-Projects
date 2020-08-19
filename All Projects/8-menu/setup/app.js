@@ -170,27 +170,73 @@ function displayMenuItems(menuItems) {
 //
 //
 // FUNCTION COMPLETA: GRABING INFO AND FILTERING
+// Select
 const sectionCenter = document.querySelector('.section-center');
-const filterBtns = document.querySelectorAll('.filter-btn');
+const container = document.querySelector('.btn-container');
+
+// Load
 window.addEventListener('DOMContentLoaded', function () {
   displayMenuItems(menu);
+  displayMenuButtons();
 });
-filterBtns.forEach(function (btn) {
-  btn.addEventListener('click', function (evt) {
-    // console.log(evt.currentTarget.dataset.filtername);
-    const category = evt.currentTarget.dataset.filtername;
-    const menuCategory = menu.filter(function (menuItem) {
-      // console.log(menuItem.category); // Devuelve ALL Category inside the ARRAY (for each item) we need to Filter THIS!
-      if (menuItem.category === category) {
-        // No hay Category ALL. Necesitamos otra IF
-        return menuItem;
+
+//
+//
+// ----> DYNAMIC BUTTONS!!!! <----
+// Que pasa si se agrega una nueva categoria?
+// Necesitariamos crear botones Dynamicos.
+// Cuando se cambie la DATA, necesitamos que los botones sean dinamicos, y se agreguen o saquen a las nuevas categorias
+// 1) Get Unique Categories, una de cada una de las que haya
+// 2) Return buttons acorde a cada categoria
+// 3) Solo  una vez dispuestos, seleccionar los btns.
+// COMENTAMOS LOS BTNS EN HTML.
+
+// Queremos Unique Categories. Necesitamos usar REDUCE:
+// We have 2 parameters ( function, typeof) --> Usaremos (Function, ["all"])
+// menu.reduce (function(){}, Array de STR ["ALL"]);
+
+// Function para ser calleada dentro de window.load
+function displayMenuButtons() {
+  const categories = menu.reduce(
+    function (values, item) {
+      if (!values.includes(item.category)) {
+        // If Values(nuestro array) NO tiene item.category, then Add category to our Array.
+        values.push(item.category);
       }
+      return values;
+    },
+    ['all'] // Devolvemos un Array, con valor inicial "all"
+  );
+  const categoryBtns = categories
+    .map(function (category) {
+      return `<button class="filter-btn" type="button" data-filtername="${category}">
+          ${category}
+        </button>`;
+    })
+    .join('');
+  container.innerHTML = categoryBtns;
+  const filterBtns = document.querySelectorAll('.filter-btn');
+
+  // console.log(categories); // Vemos el nuevo array.
+
+  // Filter
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener('click', function (evt) {
+      // console.log(evt.currentTarget.dataset.filtername);
+      const category = evt.currentTarget.dataset.filtername;
+      const menuCategory = menu.filter(function (menuItem) {
+        // console.log(menuItem.category); // Devuelve ALL Category inside the ARRAY (for each item) we need to Filter THIS!
+        if (menuItem.category === category) {
+          // No hay Category ALL. Necesitamos otra IF
+          return menuItem;
+        }
+      });
+      if (category === 'all') {
+        displayMenuItems(menu); // Si category all: Mostramos toda la function , con el menu Array. (all items)
+      } else {
+        displayMenuItems(menuCategory); // Si no es ALL: Show la Category dentro NEW ARRAY!!!! INCREIBLE
+      }
+      // console.log(menuCategory); // Nos devuelve TODOS LOS ITEMS DEL ARRAY, queremos un IF.
     });
-    if (category === 'all') {
-      displayMenuItems(menu); // Si category all: Mostramos toda la function , con el menu Array. (all items)
-    } else {
-      displayMenuItems(menuCategory);
-    }
-    // console.log(menuCategory); // Nos devuelve TODOS LOS ITEMS DEL ARRAY, queremos un IF.
   });
-});
+}
