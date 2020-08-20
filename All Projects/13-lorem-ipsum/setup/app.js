@@ -11,3 +11,33 @@ I just told you! You've killed me! Fry! Quit doing the right thing, you jerk! Mi
   `Man braid celiac synth freegan readymade, pitchfork fam salvia waistcoat lomo bitters gentrify four loko. Pitchfork semiotics post-ironic vegan. Tofu meditation microdosing hashtag semiotics venmo. Flexitarian vape tilde taiyaki. Prism poutine farm-to-table, messenger bag vegan taxidermy tattooed sartorial squid jean shorts fixie selvage trust fund vape.`,
   `Rutters Plate Fleet boom chandler Brethren of the Coast handsomely lookout marooned brigantine knave. Buccaneer gangway jack rum loot spyglass line Jack Tar fore gaff. Gaff topmast scuttle ballast swab draught measured fer yer chains dance the hempen jig Chain Shot yardarm.`,
 ];
+
+// Tenemos un Array y podemos tomar elementos de dicho Array
+// 1) Select
+const form = document.querySelector('.lorem-form');
+const amount = document.getElementById('amount');
+const result = document.querySelector('.lorem-text');
+// 2) event
+form.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  // console.log('hello'); // Vemos que el default lo envia al server. PREVENIR!
+  const value = parseInt(amount.value); // Parse para evitar el STR
+  // console.log(value); // Vemos que el amount es una STR, hay que convertir a INT para poder ingresar al array.
+  //
+  // Cosas que pueden pasar: Negative Numbers, Empty Value, More than 9
+  // Creamos un Random para mostar si se da esta condicion
+  const random = Math.floor(Math.random() * text.length);
+  if (isNaN(value) || value <= 0 || value > 9) {
+    // SI --> Not number, less 0, more 9
+    result.innerHTML = `<p class="result"> ${text[random]} </p>`; // Show index 0 of Array
+  } else {
+    let tempText = text.slice(0, value); // Nos da una Copy del Array, desde 0 , ends Value ingresado
+    tempText = tempText
+      .map(function (item) {
+        // MAPEAMOS dicha array
+        return `<p class="result"> ${item} </p>`; // Nos devuelve de 0 a VALUE de dichos INDEXES
+      })
+      .join(''); // Transformamos a STR para poder innerHTML
+    result.innerHTML = tempText; // Agregamos al HTML dicho Valor
+  }
+});
