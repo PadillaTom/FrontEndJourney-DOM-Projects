@@ -13,7 +13,42 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>grocery bud project</h1>
+    <section class="section-center">
+      <!-- Form -->
+      <form class="grocery-form">
+        <p class="alert"></p>
+        <h3>Grocery Bud</h3>
+        <div class="form-control">
+          <input type="text" id="grocery" placeholder="e.g. Eggs" />
+          <button type="submit" class="submit-btn">
+            Submit
+          </button>
+        </div>
+      </form>
+      <!-- End Form -->
+      <!-- List -->
+      <div class="grocery-container">
+        <div class="grocery-list">
+          <article class="grocery-item">
+            <p class="title">Item</p>
+            <!-- Edit Delete Btns -->
+            <div class="btn-container">
+              <button type="button" class="edit-btn">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button type="button" class="delete-btn">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+            <!-- End Edit Delete Btns -->
+          </article>
+        </div>
+        <!-- Clear Button -->
+        <button type="button" class="clear-btn">Clear Item</button>
+        <!-- End Button -->
+      </div>
+      <!-- End List -->
+    </section>
     <!-- javascript -->
     <script src="app.js"></script>
   </body>
