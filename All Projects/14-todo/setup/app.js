@@ -19,9 +19,10 @@ form.addEventListener('submit', addItem); // La func se Llama ADDITEM
 clearBtn.addEventListener('click', clearItems);
 //
 // Delete Individual Item --> Its Dynamic. So i need to acces the Dynamic Class
-
 // Edit Individual Item --> Its Dynamic.  So i need to acces the Dynamic Class
 //
+// Load Items
+window.addEventListener('DOMContentLoaded', setupItems);
 // ****** FUNCTIONS **********
 // ---> AddItem Function (FORM) --->
 function addItem(e) {
@@ -195,4 +196,44 @@ function getLocalStorage() {
 // const oranges = JSON.parse(localStorage.getItem('orange'));
 // console.log(oranges); // Vemos los valores pedidos de la Local Storage
 // localStorage.removeItem("orange");
+//
+//
 // ****** SETUP ITEMS **********
+//// Tomar los Datos de la Local Storage y mostrarlos una vez cargada la page.
+function setupItems() {
+  let items = getLocalStorage();
+  if (items.length > 0) {
+    items.forEach(function (item) {
+      createListItem(item.id, item.value);
+    });
+    container.classList.add('show-container');
+  }
+}
+// Creamos una function que contenga todo lo de ADDITEM para pasarla dentro del setup items
+// Sería como crear de vuelta la lista con los dachos ya creados.
+// FUNCTION
+function createListItem(id, value) {
+  // Value NOT empty, NOT EDITING
+  // console.log('Adding Items'); // Para probar
+  const element = document.createElement('article'); // Creamos Elemento donde alojar el ADD item
+  element.classList.add('grocery-item');
+  const attr = document.createAttribute('data-id'); // Creamos un atributo al nuevo Article creado arriba
+  attr.value = id;
+  element.setAttributeNode(attr); // Ponemos dicho attribute
+  element.innerHTML = `<p class="title">${value}</p>
+                       <div class="btn-container">
+              <button type="button" class="edit-btn">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button type="button" class="delete-btn">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>`;
+  // ---> Delete BTN SELECTION --->
+  const deleteBtn = element.querySelector('.delete-btn');
+  const editBtn = element.querySelector('.edit-btn');
+  deleteBtn.addEventListener('click', deleteItem);
+  editBtn.addEventListener('click', editItem);
+  // Agregamos el Child
+  list.appendChild(element);
+}
